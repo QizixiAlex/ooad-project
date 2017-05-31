@@ -11,7 +11,7 @@ public class RiskCheck {
     private Company company;
     private Timestamp actualFinishDate;
     private CheckStatus status;
-    //task source is template name
+    //task source is plan name
     private String taskSource;
     private Timestamp startDate;
     private Timestamp finishDate;
