@@ -1,0 +1,1 @@
+INSERT INTO risk_check_template_item VALUES (10,"checkfirealarm","checkifbroken")

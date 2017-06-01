@@ -16,6 +16,18 @@ public class Company {
 
     public Company(){}
 
+    public Company(String id, String name, CompanyStatus status, String code, String industryType, String industry, String trade, String contactName, String contactTel) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.code = code;
+        this.industryType = industryType;
+        this.industry = industry;
+        this.trade = trade;
+        this.contactName = contactName;
+        this.contactTel = contactTel;
+    }
+
     public String getId() {
         return id;
     }
