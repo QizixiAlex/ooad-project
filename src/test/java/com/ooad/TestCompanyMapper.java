@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  * Created by Alex on 2017/6/1.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RisksystemApplication.class)
+@SpringBootTest(classes = RisksystemApplication.class, webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestCompanyMapper {
 
     @Autowired
@@ -48,7 +48,7 @@ public class TestCompanyMapper {
             assertThat(company, new SamePropertyValuesAs<>(dbCompany));
         }
         //test retrieve all
-        List<Company> dbCompines = companyMapper.getCompanies();
+        List<Company> dbCompines = companyMapper.getAllCompanies();
         for (int i=0;i<companies.size();i++){
             Company company = companies.get(i);
             Company dbCompany = dbCompines.get(i);
