@@ -28,7 +28,7 @@ public class TestRiskCheckTemplateItemMapper {
 
     @Before
     public void initializeData(){
-        riskCheckTemplateItems = new ArrayList<>();
+        riskCheckTemplateItems = new ArrayList<RiskCheckTemplateItem>();
         for (int i=1;i<=3;i++){
             RiskCheckTemplateItem item =new RiskCheckTemplateItem();
             item.setName("检查项"+i);
@@ -71,11 +71,13 @@ public class TestRiskCheckTemplateItemMapper {
         }
 
         //test update
+        int index=1;
         for (RiskCheckTemplateItem dbItem:dbItems){
+            dbItem.setName("更新(update)过的名字["+index+"]");
+            dbItem.setContent("相应的升级过的内容["+(index++)+"]");
+            riskCheckTemplateItemMapper.updateRiskCheckTemplateItem(dbItem);
             RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemMapper.getRiskCheckTemplateItemById(dbItem.getId());
             Assert.assertThat(dbItem, new SamePropertyValuesAs<>(retrieveItem));
         }
-
     }
-
 }
