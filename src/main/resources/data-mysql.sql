@@ -1,1 +1,1 @@
-INSERT INTO risk_check_template_item VALUES (10,"checkfirealarm","checkifbroken")
+INSERT INTO risk_check_template_item (name,content) VALUES ("checkfirealarm","checkifbroken")
