@@ -64,9 +64,10 @@ public interface RiskCheckTemplateMapper {
             " WHERE id = #{id}")
     void updateRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
 
-    //更新template所包含的item，先delete，再insert into
-    @Insert(" INSERT INTO risk_check_template(name,description)" +
-            " VALUES (#{name},#{description})")
-    void createRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
+    //
+    void createItemInTemplate(@Param("id_template")int id_template,@Param("id_template_item") int id_template_item);
 
+    void deleteItemInTemplate(@Param("id_template")int id_template,@Param("id_template_item") int id_template_item);
+
+    void deleteItemInTemplateByIdTemplate(@Param("id_template")int id_template);
 }
