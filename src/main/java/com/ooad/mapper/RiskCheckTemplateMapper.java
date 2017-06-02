@@ -65,8 +65,6 @@ public interface RiskCheckTemplateMapper {
     void updateRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
 
     //更新template所包含的item，先delete，再insert into
-    @Delete("DELETE FROM item_in_template" +
-            "WHERE id_template = ")
     @Insert(" INSERT INTO risk_check_template(name,description)" +
             " VALUES (#{name},#{description})")
     void createRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
