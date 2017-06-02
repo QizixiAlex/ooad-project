@@ -41,8 +41,9 @@ create table company
 /*==============================================================*/
 create table company_in_plan
 (
-   id_plan              int,
-   id_company           char(50)
+   id_plan              int not null,
+   id_company           char(50) not null,
+   primary key (id_plan, id_company)
 );
 
 /*==============================================================*/
