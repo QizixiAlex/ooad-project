@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 @Component
 public interface RiskCheckItemMapper {
-
+/*
     @Insert("INSERT INTO risk_check_item(id_template_item,status,finish_date) " +
             "VALUES(#{item},#{riskCheckId},#{status},#{finishDate})")
     @Results({
@@ -36,7 +36,7 @@ public interface RiskCheckItemMapper {
             @Result(property = "finishDate", column = "finishDate")
     })
     void updateRiskCheckItem(RiskCheckItem item);
-
+*/
     @Select("SELECT * FROM risk_check_item WHERE id = #{id}")
     @Results({
             //@Result(property = "templateItemId", column = "id_template_item"),

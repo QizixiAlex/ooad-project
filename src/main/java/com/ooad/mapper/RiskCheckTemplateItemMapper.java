@@ -13,7 +13,10 @@ import java.util.List;
 @Component
 public interface RiskCheckTemplateItemMapper {
 
-    @Select("SELECT * FROM risk_check_template_item WHERE id = #{id}")
+    //根据id查询对应的item
+    @Select(" SELECT *" +
+            " FROM risk_check_template_item" +
+            " WHERE id = #{id}")
     @Results({
             @Result(property = "id",column = "id"),
             @Result(property = "name",column = "name"),
@@ -21,30 +24,25 @@ public interface RiskCheckTemplateItemMapper {
     })
     RiskCheckTemplateItem getRiskCheckTemplateItemById(@Param("id") int id);
 
-    @Insert("INSERT INTO risk_check_template_item(name,content) VALUES " +
-            "(#{name},#{content})")
-    @Results({
-            //@Result(property = "id",column = "id"),
-            @Result(property = "name",column = "name"),
-            @Result(property = "content",column = "content")
-    })
-    void createRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
-
-    @Update("UPDATE risk_check_template_item SET name = #{name},content = #{content}" +
-            "WHERE id = #{id}")
-    @Results({
-            @Result(property = "id",column = "id"),
-            @Result(property = "name",column = "name"),
-            @Result(property = "content",column = "content")
-    })
-    void updateRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
-
-    @Select("SELECT * FROM risk_check_template_item")
+    //查询所有item
+    @Select(" SELECT *" +
+            " FROM risk_check_template_item")
     @Results({
             @Result(property = "id",column = "id"),
             @Result(property = "name",column = "name"),
             @Result(property = "content",column = "content")
     })
     List<RiskCheckTemplateItem> getRiskCheckTemplateItems();
+
+    //插入新的item，name与content指定，id自动产生
+    @Insert(" INSERT INTO risk_check_template_item(name,content)" +
+            " VALUES (#{name},#{content})")
+    void createRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
+
+    //根据id，更新name与content
+    @Update(" UPDATE risk_check_template_item" +
+            " SET name = #{name},content = #{content}" +
+            " WHERE id = #{id}")
+    void updateRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
 
 }
