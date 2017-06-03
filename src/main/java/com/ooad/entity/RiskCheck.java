@@ -7,6 +7,7 @@ import java.util.List;
  * Created by Qizixi on 2017/5/31.
  */
 public class RiskCheck {
+    private int id;
     private List<RiskCheckItem> items;
     private Company company;
     private Timestamp actualFinishDate;
@@ -72,5 +73,13 @@ public class RiskCheck {
 
     public void setFinishDate(Timestamp finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

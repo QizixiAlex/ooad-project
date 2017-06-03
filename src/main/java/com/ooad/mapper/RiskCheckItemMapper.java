@@ -14,36 +14,23 @@ import java.util.List;
 @Component
 public interface RiskCheckItemMapper {
 
-    @Insert("INSERT INTO risk_check_item(id_template_item,status,finish_date) " +
-            "VALUES(#{item},#{riskCheckId},#{status},#{finishDate})")
-    @Results({
-//            @Result(property = "templateItemId", column = "id_template_item"),
-            @Result(property = "item",column = "id_template_item",one = @One(select = "getRiskCheckTemplateItemById")),
-            @Result(property = "riskCheckId", column = "id_risk_check"),
-            @Result(property = "finishDate", column = "finishDate")
-    })
-    void createRiskCheckItem(RiskCheckItem item);
+    @Insert("INSERT INTO risk_check_item(id_risk_check,id_template_item,status,finish_date) " +
+            "VALUES(#{id_risk_check},#{item.item.id},#{item.status},#{item.finishDate})")
+    @Options(useGeneratedKeys=true, keyProperty="item.id",keyColumn = "id")
+    void createRiskCheckItem(@Param("item") RiskCheckItem item,@Param("id_risk_check") int id_risk_check);
 
-    @Select("SELECT * FROM risk_check_template_item WHERE id = #{id_template_item}")
-    RiskCheckTemplateItem getRiskCheckTemplateItemById(@Param("id_template_item") int id_template_item);
-
-    @Update("UPDATE risk_check_item SET id_template_item = #{item},id_risk_check = #{riskCheckId},status = #{status}," +
+    @Update("UPDATE risk_check_item SET status = #{status}," +
             "finish_date = #{finishDate} WHERE id = #{id}")
     @Results({
-            //@Result(property = "templateItemId", column = "id_template_item"),
-            @Result(property = "item",column = "id_template_item",one = @One(select = "getRiskCheckTemplateItemById")),
-            @Result(property = "riskCheckId", column = "id_risk_check"),
-            @Result(property = "finishDate", column = "finishDate")
+            @Result(property = "finishDate", column = "finish_date")
     })
     //only status and finish date
     void updateRiskCheckItem(RiskCheckItem item);
 
     @Select("SELECT * FROM risk_check_item WHERE id = #{id}")
     @Results({
-            //@Result(property = "templateItemId", column = "id_template_item"),
             @Result(property = "item",column = "id_template_item",one = @One(select = "getRiskCheckTemplateItemById")),
-            @Result(property = "riskCheckId", column = "id_risk_check"),
-            @Result(property = "finishDate", column = "finishDate")
+            @Result(property = "finishDate", column = "finish_date")
     })
     RiskCheckItem getRiskCheckItemById(@Param("id") int id);
 
@@ -51,8 +38,11 @@ public interface RiskCheckItemMapper {
     @Results({
             //@Result(property = "templateItemId", column = "id_template_item"),
             @Result(property = "item",column = "id_template_item",one = @One(select = "getRiskCheckTemplateItemById")),
-            @Result(property = "riskCheckId", column = "id_risk_check"),
-            @Result(property = "finishDate", column = "finishDate")
+            @Result(property = "finishDate", column = "finish_date")
     })
     List<RiskCheckItem> getRiskCheckItems();
+
+    //helper
+    @Select("SELECT * FROM risk_check_template_item WHERE id = #{id_template_item}")
+    RiskCheckTemplateItem getRiskCheckTemplateItemById(@Param("id_template_item") int id_template_item);
 }
