@@ -1,4 +1,4 @@
-package com.ooad;
+package com.ooad.mappertest;
 
 import com.ooad.entity.*;
 

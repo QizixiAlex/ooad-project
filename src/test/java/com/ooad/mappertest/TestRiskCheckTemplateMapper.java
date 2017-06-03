@@ -1,5 +1,6 @@
-package com.ooad;
+package com.ooad.mappertest;
 
+import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplate;
 import com.ooad.entity.RiskCheckTemplateItem;
 import com.ooad.mapper.RiskCheckTemplateItemMapper;
