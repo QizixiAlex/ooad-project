@@ -46,6 +46,6 @@ public interface CompanyMapper {
             @Result(property = "contactName",column = "contact_name"),
             @Result(property = "contactTel",column = "contact_tel")
     })
-    List<Company> getAllCompanies();
+    List<Company> getCompanies();
 
 }

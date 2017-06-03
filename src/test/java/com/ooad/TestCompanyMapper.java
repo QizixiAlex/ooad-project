@@ -48,7 +48,7 @@ public class TestCompanyMapper {
             assertThat(company, new SamePropertyValuesAs<>(dbCompany));
         }
         //test retrieve all
-        List<Company> dbCompines = companyMapper.getAllCompanies();
+        List<Company> dbCompines = companyMapper.getCompanies();
         for (int i=0;i<companies.size();i++){
             Company company = companies.get(i);
             Company dbCompany = dbCompines.get(i);
