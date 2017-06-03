@@ -56,6 +56,7 @@ public interface RiskCheckTemplateMapper {
     //插入一个template，指定name与description，自动生成id
     @Insert(" INSERT INTO risk_check_template(name,description)" +
             " VALUES (#{name},#{description})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
 
     //更新一个template，根据id，写入新的name与description
@@ -64,9 +65,19 @@ public interface RiskCheckTemplateMapper {
             " WHERE id = #{id}")
     void updateRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
 
-    //更新template所包含的item，先delete，再insert into
-    @Insert(" INSERT INTO risk_check_template(name,description)" +
-            " VALUES (#{name},#{description})")
-    void createRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
+    //为特定id_template模板关联一个特定id_template_item项目
+    @Insert(" INSERT INTO item_in_template(id_template,id_template_item)" +
+            " VALUES (#{id_template},#{id_template_item})")
+    void createItemInTemplate(@Param("id_template")int id_template,@Param("id_template_item") int id_template_item);
 
+    //为特定id_template模板取消关联一个特定id_template_item项目
+    @Delete(" DELETE FROM item_in_template" +
+            " WHERE id_template = #{id_template}" +
+            "       AND id_template_item = #{id_template_item}")
+    void deleteItemInTemplate(@Param("id_template")int id_template,@Param("id_template_item") int id_template_item);
+
+    //为特定id_template模板取消关联所有项目
+    @Delete(" DELETE FROM item_in_template" +
+            " WHERE id_template = #{id_template}")
+    void deleteItemInTemplateByIdTemplate(@Param("id_template")int id_template);
 }

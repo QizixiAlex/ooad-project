@@ -47,6 +47,7 @@ public class TestRiskCheckTemplateItemMapper {
         //create
         for (RiskCheckTemplateItem item:riskCheckTemplateItems) {
             riskCheckTemplateItemMapper.createRiskCheckTemplateItem(item);
+            //System.out.print(item.getId());
         }
 
         //test retrieve all and create
