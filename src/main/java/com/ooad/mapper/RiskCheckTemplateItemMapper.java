@@ -37,6 +37,7 @@ public interface RiskCheckTemplateItemMapper {
     //插入新的item，name与content指定，id自动产生
     @Insert(" INSERT INTO risk_check_template_item(name,content)" +
             " VALUES (#{name},#{content})")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
 
     //根据id，更新name与content
