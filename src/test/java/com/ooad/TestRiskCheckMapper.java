@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,60 +43,51 @@ public class TestRiskCheckMapper {
     @Before
     public void initializeData() throws ParseException {
 
+        //initialize companies
         companies = TestTools.getCompines(batch);
-
         for (Company company:companies){
             companyMapper.createCompany(company);
         }
 
-        companies = companyMapper.getCompanies();
-
-        for (int i=0;i<companies.size();i++){
-            if (Objects.equals(companies.get(i).getId(), "a123")){
-                companies.remove(companies.get(i));
-                break;
-            }
-        }
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2007-09-24 10:10:10.0");
         riskChecks = TestTools.getRiskChecks(batch,companies,timestamp,CheckStatus.排查中);
 
         templateItems = TestTools.getRiskCheckTemplateItems(batch);
         for (RiskCheckTemplateItem item:templateItems){
             riskCheckTemplateItemMapper.createRiskCheckTemplateItem(item);
         }
-        templateItems = riskCheckTemplateItemMapper.getRiskCheckTemplateItems();
 
-        timestamp = new Timestamp(System.currentTimeMillis());
+        timestamp = java.sql.Timestamp.valueOf("2007-09-24 10:10:10.0");
         riskCheckItems = TestTools.getRiskCheckItems(templateItems, CheckStatus.排查中,timestamp);
 
     }
 
     @Test
     public void testRetrieveUpdate(){
+        //insert riskChecks into database
         for (RiskCheck riskCheck:riskChecks){
             riskCheckMapper.createRiskCheck(riskCheck,1);
         }
-        List<RiskCheck> retrievedRiskChecks = riskCheckMapper.getRiskChecks();
+        List<RiskCheck> retrievedRiskChecks = new LinkedList<>();
+        for (RiskCheck riskCheck:riskChecks){
+            retrievedRiskChecks.add(riskCheckMapper.getRiskCheckById(riskCheck.getId()));
+        }
+        //test create and retrieve
         for (int i=0;i<batch;i++){
             RiskCheck riskCheck = riskChecks.get(i);
             RiskCheck retrievedRiskCheck = retrievedRiskChecks.get(i);
             assertEquals(riskCheck.getStatus(),retrievedRiskCheck.getStatus());
-            assertEquals(riskCheck.getFinishDate().getTime(),retrievedRiskCheck.getFinishDate().getTime());
+            assertEquals(riskCheck.getActualFinishDate().getTime(),retrievedRiskCheck.getActualFinishDate().getTime());
             assertEquals(retrievedRiskCheck.getTaskSource(),"firstplan");
-            //todo
-            //check plan dates
         }
+        //test retrieve of riskcheckitems
         int sampleId = riskChecks.get(0).getId();
+        //insert riskcheckitems
         for (RiskCheckItem item:riskCheckItems){
             riskCheckItemMapper.createRiskCheckItem(item,sampleId);
         }
-        riskCheckItems = riskCheckItemMapper.getRiskCheckItems();
-
         RiskCheck sampleRiskCheck = riskCheckMapper.getRiskCheckById(sampleId);
-
         List<RiskCheckItem> riskCheckItemsOfRiskCheck = sampleRiskCheck.getItems();
-
         for (int i=0;i<riskCheckItems.size();i++){
             RiskCheckItem item = riskCheckItems.get(i);
             RiskCheckItem retrievedItem = riskCheckItemsOfRiskCheck.get(i);
@@ -103,6 +95,12 @@ public class TestRiskCheckMapper {
             assertEquals(item.getItem().getId(),retrievedItem.getItem().getId());
             assertEquals(item.getFinishDate().getTime(),retrievedItem.getFinishDate().getTime());
         }
-
+        //test update
+        for (RiskCheck riskCheck:riskChecks){
+            riskCheck.setStatus(CheckStatus.已完成);
+            riskCheckMapper.updateRiskCheck(riskCheck);
+            RiskCheck retrievedRiskCheck = riskCheckMapper.getRiskCheckById(riskCheck.getId());
+            assertEquals(riskCheck.getStatus(),retrievedRiskCheck.getStatus());
+        }
     }
 }

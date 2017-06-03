@@ -33,6 +33,7 @@ public class TestRiskCheckItemMapper {
     private List<RiskCheckTemplateItem> templateItems;
     private List<RiskCheckItem> items;
     private final int batchSize = 5;
+    //this id_risk_check is from data sql
     private final int id_risk_check = 1;
 
     @Before

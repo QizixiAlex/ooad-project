@@ -16,6 +16,7 @@ public interface RiskCheckItemMapper {
 
     @Insert("INSERT INTO risk_check_item(id_risk_check,id_template_item,status,finish_date) " +
             "VALUES(#{id_risk_check},#{item.item.id},#{item.status},#{item.finishDate})")
+    @Options(useGeneratedKeys=true, keyProperty="item.id",keyColumn = "id")
     void createRiskCheckItem(@Param("item") RiskCheckItem item,@Param("id_risk_check") int id_risk_check);
 
     @Update("UPDATE risk_check_item SET status = #{status}," +
