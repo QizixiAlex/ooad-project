@@ -1,5 +1,6 @@
-package com.ooad;
+package com.ooad.mappertest;
 
+import com.ooad.RisksystemApplication;
 import com.ooad.entity.*;
 import com.ooad.mapper.CompanyMapper;
 import com.ooad.mapper.RiskCheckItemMapper;
@@ -12,11 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
-import java.sql.Timestamp;
+
 import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Alex on 2017/6/3.
