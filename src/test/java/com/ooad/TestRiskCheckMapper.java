@@ -96,11 +96,14 @@ public class TestRiskCheckMapper {
             assertEquals(item.getFinishDate().getTime(),retrievedItem.getFinishDate().getTime());
         }
         //test update
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2017-09-24 10:10:10.0");
         for (RiskCheck riskCheck:riskChecks){
             riskCheck.setStatus(CheckStatus.已完成);
+            riskCheck.setFinishDate(timestamp);
             riskCheckMapper.updateRiskCheck(riskCheck);
             RiskCheck retrievedRiskCheck = riskCheckMapper.getRiskCheckById(riskCheck.getId());
             assertEquals(riskCheck.getStatus(),retrievedRiskCheck.getStatus());
+            assertEquals(riskCheck.getActualFinishDate().getTime(),retrievedRiskCheck.getActualFinishDate().getTime());
         }
     }
 }

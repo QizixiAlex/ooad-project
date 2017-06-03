@@ -48,8 +48,8 @@ public interface RiskCheckMapper {
     @Options(useGeneratedKeys=true, keyProperty="riskCheck.id",keyColumn = "id")
     void createRiskCheck(@Param("riskCheck") RiskCheck riskCheck,@Param("id_plan") int id_plan);
 
-    //only status can be updated
-    @Update("UPDATE risk_check SET status = #{status} WHERE id = #{id}")
+    //only status and finishDate can be updated
+    @Update("UPDATE risk_check SET status = #{status},actual_finish_date = #{actualFinishDate} WHERE id = #{id}")
     void updateRiskCheck(RiskCheck riskCheck);
 
     @Select("SELECT * FROM risk_check WHERE id_company = #{id_company}")
