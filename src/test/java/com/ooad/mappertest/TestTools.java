@@ -5,6 +5,7 @@ import com.ooad.entity.*;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -67,4 +68,25 @@ public class TestTools {
         return result;
     }
 
+    public static List<RiskCheckTemplateItem> generateRiskCheckTemplateItems(int size){
+        List<RiskCheckTemplateItem> result = new LinkedList<>();
+        for (int i=0;i<size;i++){
+            RiskCheckTemplateItem item = new RiskCheckTemplateItem();
+            item.setName("检查项"+i);
+            item.setContent("检查项"+i+"的内容与说明");
+            result.add(item);
+        }
+        return result;
+    }
+
+    public static List<RiskCheckTemplate> generateRiskCheckTemplates(int size){
+        List<RiskCheckTemplate> result = new ArrayList<>();
+        for (int i=0;i<size;i++){
+            RiskCheckTemplate template =new RiskCheckTemplate();
+            template.setName("检查模板"+i);
+            template.setDescription("检查模板"+i+"的内容与说明");
+            result.add(template);
+        }
+        return result;
+    }
 }
