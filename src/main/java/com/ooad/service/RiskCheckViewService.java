@@ -39,4 +39,8 @@ public class RiskCheckViewService {
     public List<RiskCheck> getRiskChecksByCompanyId(String companyId){
         return riskCheckMapper.getRiskCheckByCompanyId(companyId);
     }
+
+    public RiskCheck getRiskCheck(int riskCheckId){
+        return riskCheckMapper.getRiskCheckById(riskCheckId);
+    }
 }

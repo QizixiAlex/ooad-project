@@ -1,6 +1,7 @@
 package com.ooad.mappertest;
 
 import com.ooad.RisksystemApplication;
+import com.ooad.TestDataGenerator;
 import com.ooad.entity.*;
 import com.ooad.mapper.CompanyMapper;
 import com.ooad.mapper.RiskCheckItemMapper;
@@ -44,21 +45,21 @@ public class TestRiskCheckMapper {
     public void initializeData() throws ParseException {
 
         //initialize companies
-        companies = TestTools.getCompines(batch);
+        companies = TestDataGenerator.generateCompines(batch);
         for (Company company:companies){
             companyMapper.createCompany(company);
         }
 
         java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2007-09-24 10:10:10.0");
-        riskChecks = TestTools.getRiskChecks(batch,companies,timestamp,CheckStatus.排查中);
+        riskChecks = TestDataGenerator.generateRiskChecks(batch,companies,timestamp,CheckStatus.排查中);
 
-        templateItems = TestTools.getRiskCheckTemplateItems(batch);
+        templateItems = TestDataGenerator.generateRiskCheckTemplateItems(batch);
         for (RiskCheckTemplateItem item:templateItems){
             riskCheckTemplateItemMapper.createRiskCheckTemplateItem(item);
         }
 
         timestamp = java.sql.Timestamp.valueOf("2007-09-24 10:10:10.0");
-        riskCheckItems = TestTools.getRiskCheckItems(templateItems, CheckStatus.排查中,timestamp);
+        riskCheckItems = TestDataGenerator.generateRiskCheckItems(templateItems, CheckStatus.排查中,timestamp);
 
     }
 

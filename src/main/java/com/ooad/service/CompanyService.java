@@ -36,7 +36,7 @@ public class CompanyService {
         return companyMapper.getCompanies();
     }
 
-    public boolean validId(String id){
+    public boolean idNotInDB(String id){
         Company company = companyMapper.getCompanyById(id);
         return company==null;
     }

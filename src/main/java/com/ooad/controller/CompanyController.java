@@ -23,7 +23,7 @@ public class CompanyController {
 
     public void createCompany(String id, String name, String statusStr, String code, String industryType, String industry, String trade, String contactName, String contactTel) {
         //check input id
-        if (!companyService.validId(id)){
+        if (!companyService.idNotInDB(id)){
             return;
         }
         //check input status
@@ -45,7 +45,7 @@ public class CompanyController {
 
     public void updateCompany(String id, String name, String statusStr, String code, String industryType, String industry, String trade, String contactName, String contactTel) {
         //check input id
-        if (companyService.validId(id)){
+        if (companyService.idNotInDB(id)){
             return;
         }
         //check input status

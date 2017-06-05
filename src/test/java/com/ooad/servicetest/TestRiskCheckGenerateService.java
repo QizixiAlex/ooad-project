@@ -3,7 +3,7 @@ package com.ooad.servicetest;
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.*;
 import com.ooad.mapper.*;
-import com.ooad.mappertest.TestTools;
+import com.ooad.TestDataGenerator;
 import com.ooad.service.RiskCheckGenerateService;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 
-import java.awt.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -44,19 +43,18 @@ public class TestRiskCheckGenerateService {
     private List<Company> companies;
     @Before
     public void initializeData(){
-
         //init compines
-        companies = TestTools.getCompines(2);
+        companies = TestDataGenerator.generateCompines(2);
         for (Company company:companies){
             companyMapper.createCompany(company);
         }
         //init templateItems
-        List<RiskCheckTemplateItem> templateItems = TestTools.generateRiskCheckTemplateItems(0);
+        List<RiskCheckTemplateItem> templateItems = TestDataGenerator.generateRiskCheckTemplateItems(0);
         for (RiskCheckTemplateItem item:templateItems){
             riskCheckTemplateItemMapper.createRiskCheckTemplateItem(item);
         }
         //init template
-        RiskCheckTemplate template = TestTools.generateRiskCheckTemplates(1).get(0);
+        RiskCheckTemplate template = TestDataGenerator.generateRiskCheckTemplates(1).get(0);
         riskCheckTemplateMapper.createRiskCheckTemplate(template);
         for (RiskCheckTemplateItem item:templateItems){
             riskCheckTemplateMapper.createItemInTemplate(template.getId(),item.getId());
@@ -83,7 +81,5 @@ public class TestRiskCheckGenerateService {
             RiskCheck riskCheck = riskChecks.get(0);
 
         }
-        List<RiskCheck> result = riskCheckMapper.getRiskCheckByCompanyId("j;slakdf");
-        System.out.println("wtf");
     }
 }

@@ -1,30 +1,21 @@
-package com.ooad.mappertest;
+package com.ooad;
 
 import com.ooad.entity.*;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Alex on 2017/6/3.
  */
-public class TestTools {
+//this class is used to generate test data
+public class TestDataGenerator {
 
-    public static List<RiskCheckTemplateItem> getRiskCheckTemplateItems(int size){
-        List<RiskCheckTemplateItem> result = new ArrayList<>();
-        for (int i=0;i<size;i++){
-            RiskCheckTemplateItem item =new RiskCheckTemplateItem();
-            item.setName("检查项"+i);
-            item.setContent("检查项"+i+"的内容与说明");
-            result.add(item);
-        }
-        return result;
-    }
-
-    public static List<RiskCheckItem> getRiskCheckItems(List<RiskCheckTemplateItem> templateItems,CheckStatus status,Timestamp timestamp) throws ParseException {
+    public static List<RiskCheckItem> generateRiskCheckItems(List<RiskCheckTemplateItem> templateItems, CheckStatus status, Timestamp timestamp) throws ParseException {
         int size = templateItems.size();
         List<RiskCheckItem> result = new ArrayList<>();
         for (int i=0;i<size;i++){
@@ -37,7 +28,7 @@ public class TestTools {
         return result;
     }
 
-    public static List<Company> getCompines(int size){
+    public static List<Company> generateCompines(int size){
         List<Company> result = new ArrayList<>();
         for (int i=0;i<size;i++){
             Company company = new Company();
@@ -55,7 +46,7 @@ public class TestTools {
         return result;
     }
 
-    public static List<RiskCheck> getRiskChecks(int size,List<Company> companies,Timestamp timestamp,CheckStatus status){
+    public static List<RiskCheck> generateRiskChecks(int size, List<Company> companies, Timestamp timestamp, CheckStatus status){
         assert companies.size() == size;
         List<RiskCheck> result = new ArrayList<>();
         for (int i=0;i<size;i++){
@@ -86,6 +77,21 @@ public class TestTools {
             template.setName("检查模板"+i);
             template.setDescription("检查模板"+i+"的内容与说明");
             result.add(template);
+        }
+        return result;
+    }
+
+    public static List<RiskCheckPlan> generateRiskCheckPlans(int size,List<RiskCheckTemplate> templates){
+        assert size==templates.size();
+        List<RiskCheckPlan> result = new ArrayList<>();
+        for (int i=0;i<size;i++){
+            RiskCheckTemplate template = templates.get(i);
+            RiskCheckPlan plan=new RiskCheckPlan();
+            plan.setName("check plan:"+i);
+            plan.setStartDate(new Timestamp(new Date().getTime()));
+            plan.setFinishDate(new Timestamp(new Date().getTime()+24*60*60*1000));
+            plan.setTemplate(template);
+            result.add(plan);
         }
         return result;
     }
