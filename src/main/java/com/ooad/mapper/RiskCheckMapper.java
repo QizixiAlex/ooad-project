@@ -43,8 +43,8 @@ public interface RiskCheckMapper {
     })
     List<RiskCheck> getRiskChecks();
 
-    @Insert("INSERT INTO risk_check(id_plan,id_company,actual_finish_date,status)" +
-            "VALUES(#{id_plan},#{riskCheck.company.id},#{riskCheck.actualFinishDate},#{riskCheck.status})")
+    @Insert("INSERT INTO risk_check(id_plan,id_company,status)" +
+            "VALUES(#{id_plan},#{riskCheck.company.id},#{riskCheck.status})")
     @Options(useGeneratedKeys=true, keyProperty="riskCheck.id",keyColumn = "id")
     void createRiskCheck(@Param("riskCheck") RiskCheck riskCheck,@Param("id_plan") int id_plan);
 
@@ -65,6 +65,18 @@ public interface RiskCheckMapper {
     })
     List<RiskCheck> getRiskCheckByCompanyId(@Param("id_company")String id_company);
 
+    @Select("SELECT * FROM risk_check WHERE id_plan = #{id_plan}")
+    @Results({
+            @Result(property = "id",column = "id"),
+            @Result(property = "status",column = "status"),
+            @Result(property = "items",column = "id",many = @Many(select = "getRiskCheckItemsByRiskCheckId")),
+            @Result(property = "company",column = "id_company",one = @One(select = "getCompanyById")),
+            @Result(property = "actualFinishDate",column = "actual_finish_date"),
+            @Result(property = "taskSource",column = "id_plan",one = @One(select = "getPlanName")),
+            @Result(property = "startDate",column = "id_plan",one = @One(select = "getPlanStartDate")),
+            @Result(property = "finishDate",column = "id_plan",one = @One(select = "getPlanFinishDate")),
+    })
+    List<RiskCheck> getRiskCheckByPlanId(@Param("id_plan")int id_plan);
     //helper
     @Select("SELECT * FROM risk_check_item WHERE id_risk_check = #{id_risk_check}")
     @Results({
