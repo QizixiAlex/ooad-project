@@ -39,7 +39,7 @@ public class TestRiskCheckTemplateItemService {
     }
 
     @Test
-    public void testRiskCheckTemplateItemMapper(){
+    public void testRiskCheckTemplateItemService(){
 
         //get 'number' of tuples before create
         List<RiskCheckTemplateItem> dbItems = riskCheckTemplateItemService.getRiskCheckTemplateItems();

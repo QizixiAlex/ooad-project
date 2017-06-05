@@ -1,9 +1,7 @@
 package com.ooad.service;
 
-import com.ooad.entity.RiskCheckTemplate;
 import com.ooad.entity.RiskCheckTemplateItem;
 import com.ooad.mapper.RiskCheckTemplateItemMapper;
-import com.ooad.mapper.RiskCheckTemplateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
