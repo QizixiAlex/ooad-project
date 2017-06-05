@@ -65,34 +65,13 @@ public class CompanyController {
         companyService.updateCompany(company);
     }
 
-    private Map<String,String> getCompanyDetail(Company company){
-        Map<String,String> result = new TreeMap<>();
-        result.put("id",company.getId());
-        result.put("name",company.getName());
-        result.put("status", String.valueOf(company.getStatus()));
-        result.put("code",company.getCode());
-        result.put("industryType",company.getIndustryType());
-        result.put("industry",company.getIndustry());
-        result.put("trade",company.getTrade());
-        result.put("contactName",company.getContactName());
-        result.put("contactTel",company.getContactTel());
-        return result;
-    }
-
-    public List<Map<String,String>> getCompanies(){
-        List<Map<String,String>> result = new LinkedList<>();
+    public List<Company> getCompanies(){
         List<Company> companies = companyService.getCompanies();
-        for (Company company:companies){
-            result.add(getCompanyDetail(company));
-        }
-        return result;
+        return companies;
     }
 
-    public Map<String,String> getCompany(String companyId){
-        if (companyService.validId(companyId)){
-            return new HashMap<>();
-        }
+    public Company getCompany(String companyId){
         Company company = companyService.getCompanyById(companyId);
-        return getCompanyDetail(company);
+        return company;
     }
 }
