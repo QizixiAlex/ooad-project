@@ -12,6 +12,7 @@ import com.ooad.mapper.*;
 import com.ooad.TestDataGenerator;
 import com.ooad.service.CompanyService;
 import com.ooad.service.RiskCheckGenerateService;
+import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,15 +46,14 @@ public class TestRiskCheckView {
     private RiskCheckViewController riskCheckViewController;
     @Autowired
     private RiskCheckExecutionController riskCheckExecuteController;
-    @Autowired
-    private CompanyService companyService;
+
 
     private List<Company> companies;
     private List<RiskCheckPlan> plans;
+    List<RiskCheckTemplateItem> templateItems;
 
     private final int companyNum = 5;
     private final int templateNum = 5;
-    private final int templateItemNum = 10;
     private final int planNum = 5;
 
     @Before
@@ -62,7 +62,8 @@ public class TestRiskCheckView {
         companies = TestDataGenerator.generateCompines(companyNum);
         companies.forEach(company -> companyMapper.createCompany(company));
         //init templateItems
-        List<RiskCheckTemplateItem> templateItems = TestDataGenerator.generateRiskCheckTemplateItems(templateItemNum);
+        int templateItemNum = 10;
+        templateItems = TestDataGenerator.generateRiskCheckTemplateItems(templateItemNum);
         templateItems.forEach(riskCheckTemplateItem -> riskCheckTemplateItemMapper.createRiskCheckTemplateItem(riskCheckTemplateItem));
         //init templates
         List<RiskCheckTemplate> templates = TestDataGenerator.generateRiskCheckTemplates(templateNum);
@@ -95,7 +96,6 @@ public class TestRiskCheckView {
         return riskChecks;
     }
 
-
     @After
     public void undoDataChanges(){
         List<RiskCheck> riskChecks = riskCheckViewController.getRiskChecks();
@@ -105,32 +105,76 @@ public class TestRiskCheckView {
     }
 
     @Test
-    public void testViewRiskCheck(){
+    public void testViewRiskCheckStatus(){
         //check total risk check number
         List<RiskCheck> riskChecks = riskCheckViewController.getRiskChecks();
+
+        //check riskcheck actualfinishdate
+        //todo
+        //riskChecks.forEach(riskCheck -> assertNull(riskCheck.getActualFinishDate()));
+
         //add one to it because there is one from data-mysql.sql
         assertEquals(companyNum*templateNum+1,riskChecks.size());
+
         //check find riskcheck by company and plan
         //by plan
-        plans.forEach(riskCheckPlan -> assertEquals(companyNum,riskCheckViewController.getRiskChecksByPlanId(riskCheckPlan.getId()).size()));
+        plans.forEach(riskCheckPlan -> {
+            assertEquals(companyNum,riskCheckViewController.getRiskChecksByPlanId(riskCheckPlan.getId()).size());
+            //check each riskcheck for each plan
+            riskCheckViewController.getRiskChecksByPlanId(riskCheckPlan.getId()).forEach(riskCheck -> {
+                assertEquals(riskCheckPlan.getName(),riskCheck.getTaskSource());
+                assertTrue((riskCheckPlan.getStartDate().getTime()-riskCheck.getStartDate().getTime())<1000);
+                assertTrue((riskCheckPlan.getFinishDate().getTime()-riskCheck.getFinishDate().getTime())<1000);
+            });
+        });
+
         //by company
-        companies.forEach(company -> assertEquals(planNum,riskCheckViewController.getRiskChecksByCompanyId(company.getId()).size()));
+        companies.forEach(company -> {
+            assertEquals(planNum,riskCheckViewController.getRiskChecksByCompanyId(company.getId()).size());
+            //check each riskcheck for each company
+            riskCheckViewController.getRiskChecksByCompanyId(company.getId()).forEach(riskCheck -> {
+                assertThat(riskCheck.getCompany(),new SamePropertyValuesAs<>(company));
+            });
+        });
+
         //update riskchecks
         riskChecks = retrieveAllTestRiskChecks();
+
+        //check riskcheckitems
+        for (RiskCheck riskCheck:riskChecks) {
+            List<RiskCheckItem> riskCheckItemList = riskCheck.getItems();
+            for (int i = 0;i<riskCheckItemList.size();i++){
+                RiskCheckTemplateItem templateItem = templateItems.get(i);
+                //check template item
+                assertThat(riskCheckItemList.get(i).getItem(),new SamePropertyValuesAs<>(templateItem));
+                //test date and status
+                //todo
+                //assertNull(riskCheckItemList.get(i).getFinishDate());
+                assertEquals(CheckStatus.排查中,riskCheckItemList.get(i).getStatus());
+            }
+        }
+
         //check status
         riskChecks.forEach(riskCheck->assertEquals(CheckStatus.排查中,riskCheck.getStatus()));
+
         //complete even numbers and check
         riskChecks.stream().filter(riskCheck->riskCheck.getId()%2==0).forEach(this::completeRiskCheck);
+
         //update riskchecks
         riskChecks = retrieveAllTestRiskChecks();
+
         //odd ones should not be completed
         riskChecks.stream().filter(riskCheck->riskCheck.getId()%2!=0).forEach(riskCheck -> assertEquals(CheckStatus.排查中,riskCheck.getStatus()));
+
         //even ones should be completed
         riskChecks.stream().filter(riskCheck->riskCheck.getId()%2==0).forEach(riskCheck -> assertEquals(CheckStatus.已完成,riskCheck.getStatus()));
+
         //complete the odd ones
         riskChecks.stream().filter(riskCheck->riskCheck.getId()%2!=0).forEach(this::completeRiskCheck);
+
         //update riskchecks
         riskChecks = retrieveAllTestRiskChecks();
+
         //all should be completed
         riskChecks.forEach(riskCheck->assertEquals(CheckStatus.已完成,riskCheck.getStatus()));
     }
