@@ -72,7 +72,8 @@ public class TestRiskCheckTemplateService {
         for (RiskCheckTemplate template:riskCheckTemplates){
             boolean found=false;
             for (RiskCheckTemplate dbTemplate:dbTemplates){
-                if (template.getName().equals(dbTemplate.getName())&&
+                if (template.getId()==dbTemplate.getId()&&
+                        template.getName().equals(dbTemplate.getName())&&
                         template.getDescription().equals(dbTemplate.getDescription())&&
                         template.getItems().size()==dbTemplate.getItems().size()){
                     found=true;
