@@ -56,7 +56,8 @@ public class TestRiskCheckTemplateItemService {
         for (RiskCheckTemplateItem item:riskCheckTemplateItems){
             boolean found=false;
             for (RiskCheckTemplateItem dbItem:dbItems){
-                if (item.getName().equals(dbItem.getName())&&
+                if (item.getId()==dbItem.getId()&&
+                        item.getName().equals(dbItem.getName())&&
                         item.getContent().equals(dbItem.getContent())){
                     found=true;
                     break;
