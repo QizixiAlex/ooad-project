@@ -62,6 +62,9 @@ public class TestCompanyMapper {
         companyMapper.updateCompany(company);
         Company dbCompany = companyMapper.getCompanyById(company.getId());
         assertThat(company, new SamePropertyValuesAs<>(dbCompany));
+        //test delete
+        companies.forEach(company1 -> companyMapper.deleteCompany(company1));
+        companies.forEach(company1 -> assertNull(companyMapper.getCompanyById(company1.getId())));
     }
 
 }
