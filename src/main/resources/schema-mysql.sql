@@ -64,7 +64,7 @@ create table risk_check
    id                   int not null auto_increment,
    id_plan              int,
    id_company           char(50),
-   actual_finish_date   timestamp,
+   actual_finish_date   timestamp null,
    status               text,
    primary key (id)
 );
