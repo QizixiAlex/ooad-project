@@ -10,7 +10,6 @@ import com.ooad.controller.RiskCheckViewController;
 import com.ooad.entity.*;
 import com.ooad.mapper.*;
 import com.ooad.TestDataGenerator;
-import com.ooad.service.CompanyService;
 import com.ooad.service.RiskCheckGenerateService;
 import org.junit.After;
 import org.junit.runner.RunWith;
@@ -21,6 +20,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -45,30 +45,27 @@ public class TestRiskCheckExecution {
     private RiskCheckViewController riskCheckViewController;
     @Autowired
     private RiskCheckExecutionController riskCheckExecuteController;
-    @Autowired
-    private CompanyService companyService;
 
     private List<Company> companies;
     private List<RiskCheckPlan> plans;
 
-    private final int companyNum = 5;
-    private final int templateNum = 5;
-    private final int templateItemNum = 10;
-    private final int planNum = 5;
-
     @Before
     public void initializeData(){
         //init companies
+        int companyNum = 5;
         companies = TestDataGenerator.generateCompines(companyNum);
         companies.forEach(company -> companyMapper.createCompany(company));
         //init templateItems
+        int templateItemNum = 10;
         List<RiskCheckTemplateItem> templateItems = TestDataGenerator.generateRiskCheckTemplateItems(templateItemNum);
         templateItems.forEach(riskCheckTemplateItem -> riskCheckTemplateItemMapper.createRiskCheckTemplateItem(riskCheckTemplateItem));
         //init templates
+        int templateNum = 5;
         List<RiskCheckTemplate> templates = TestDataGenerator.generateRiskCheckTemplates(templateNum);
         templates.forEach(template -> riskCheckTemplateMapper.createRiskCheckTemplate(template));
         templates.forEach((RiskCheckTemplate template) -> {templateItems.forEach(riskCheckTemplateItem -> riskCheckTemplateMapper.createItemInTemplate(template.getId(),riskCheckTemplateItem.getId()));});
         //init plans
+        int planNum = 5;
         plans = TestDataGenerator.generateRiskCheckPlans(planNum,templates);
         plans.forEach(riskCheckPlan -> riskCheckPlanMapper.createRiskCheckPlan(riskCheckPlan));
         //add companies to plans
@@ -96,6 +93,9 @@ public class TestRiskCheckExecution {
             //list riskchecks of a company
             List<RiskCheck> riskChecks = riskCheckExecuteController.getRiskCheckList(company.getId());
             for (RiskCheck riskCheck:riskChecks){
+                //finish date should be null
+                //todo
+                //assertNull(riskCheck.getActualFinishDate());
 
                 //test riskcheck execution
                 //riskcheck is uncompleted from the start
@@ -126,6 +126,11 @@ public class TestRiskCheckExecution {
                 riskCheckExecuteController.updateRiskCheckStatus(riskCheck.getId());
                 riskCheck = riskCheckViewController.getRiskCheck(riskCheck.getId());
                 assertEquals(CheckStatus.已完成,riskCheck.getStatus());
+
+                //check finish date should be close to current
+                Timestamp currentTimestamp = new Timestamp(new Date().getTime());
+                //within 5 seconds
+                assertTrue((currentTimestamp.getTime()-riskCheck.getFinishDate().getTime())<5000);
             }
         }
     }

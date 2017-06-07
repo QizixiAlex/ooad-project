@@ -59,6 +59,7 @@ public class TestCompany {
             assertEquals(testCase[6],company.getTrade());
             assertEquals(testCase[7],company.getContactName());
             assertEquals(testCase[8],company.getContactTel());
+
         }
         //test retrieve company list
         List<Company> allCompanies = companyController.getCompanies();
