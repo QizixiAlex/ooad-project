@@ -4,6 +4,8 @@ import com.ooad.entity.CheckStatus;
 import com.ooad.entity.Company;
 import com.ooad.entity.RiskCheck;
 import com.ooad.entity.RiskCheckItem;
+import com.ooad.exception.EntityNotFoundException;
+import com.ooad.exception.RiskCheckException;
 import com.ooad.mapper.CompanyMapper;
 import com.ooad.mapper.RiskCheckItemMapper;
 import com.ooad.mapper.RiskCheckMapper;
@@ -32,65 +34,70 @@ public class RiskCheckExecuteService {
         this.riskCheckItemMapper = riskCheckItemMapper;
     }
 
-    public List<RiskCheck> getRiskCheckList(String companyId){
-        //check companyId
-        //if no company then company would be null, then return emptyList
+    public List<RiskCheck> getRiskCheckList(String companyId) throws RiskCheckException{
+        //输入检查
         Company company = companyMapper.getCompanyById(companyId);
         if (company==null){
-            return new ArrayList<>();
+            throw new EntityNotFoundException("无对应公司");
         }
-        //if no riskcheck return emptyList
         List<RiskCheck> result = riskCheckMapper.getRiskCheckByCompanyId(company.getId());
+        if (result.isEmpty()){
+            throw new EntityNotFoundException("公司无待检查项");
+        }
         return result;
     }
 
-    public List<RiskCheckItem> getRiskCheckItems(int riskCheckId){
+    public List<RiskCheckItem> getRiskCheckItems(int riskCheckId) throws RiskCheckException{
+        //输入检查
         RiskCheck riskCheck = riskCheckMapper.getRiskCheckById(riskCheckId);
-        //check id
         if (riskCheck==null){
-            return new ArrayList<>();
+            throw new EntityNotFoundException("无对应检查");
         }
-        if (riskCheck.getItems() == null){
-            return new ArrayList<>();
+        if (riskCheck.getItems() == null||riskCheck.getItems().size()==0){
+            throw new EntityNotFoundException("无检查项");
         }
         return riskCheck.getItems();
     }
 
-    public void updateRiskCheckItem(int riskCheckItemId, CheckStatus status){
+    public void updateRiskCheckItem(int riskCheckItemId, CheckStatus status) throws RiskCheckException{
+        //输入检查
         RiskCheckItem riskCheckItem = riskCheckItemMapper.getRiskCheckItemById(riskCheckItemId);
-        //check id
         if (riskCheckItem==null){
-            return;
+            throw new EntityNotFoundException("无对应检查");
         }
-        //update if status change
+        //更新状态
         if (riskCheckItem.getStatus()!=status){
             riskCheckItem.setStatus(status);
             if (status == CheckStatus.已完成){
                 Timestamp timestamp = new Timestamp(new Date().getTime());
                 riskCheckItem.setFinishDate(timestamp);
             }
-            //set to database
+            //更新数据库
             riskCheckItemMapper.updateRiskCheckItem(riskCheckItem);
         }
     }
 
-    public void updateRiskCheckStatus(int riskCheckId){
+    public void updateRiskCheckStatus(int riskCheckId) throws RiskCheckException{
+        //输入检查
+        //不允许将已完成的检查项重置为未完成
         RiskCheck riskCheck = riskCheckMapper.getRiskCheckById(riskCheckId);
-        //check riskCheckId
         if (riskCheck==null){
+            throw new EntityNotFoundException("无对应检查");
+        }
+        if (riskCheck.getStatus()==CheckStatus.已完成){
             return;
         }
-        //check riskCheckItem
+        //逐个检查检查项
         for (RiskCheckItem item:riskCheck.getItems()){
             if (item.getStatus()==CheckStatus.排查中){
-                //riskCheck not finished
+                //检查未完成
                 return;
             }
         }
-        //riskCheck finished
+        //检查已完成
         riskCheck.setStatus(CheckStatus.已完成);
         riskCheck.setFinishDate(new Timestamp(new Date().getTime()));
-        //set to database
+        //更新数据库
         riskCheckMapper.updateRiskCheck(riskCheck);
     }
 

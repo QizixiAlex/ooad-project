@@ -2,6 +2,7 @@ package com.ooad.servicetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.*;
+import com.ooad.exception.RiskCheckException;
 import com.ooad.mapper.*;
 import com.ooad.TestDataGenerator;
 import com.ooad.service.RiskCheckGenerateService;
@@ -73,7 +74,11 @@ public class TestRiskCheckGenerateService {
 
     @Test
     public void testRiskCheckService(){
-        riskCheckGenerateService.generateRiskCheck(plan.getId());
+        try {
+            riskCheckGenerateService.generateRiskCheck(plan.getId());
+        } catch (RiskCheckException e) {
+            e.printStackTrace();
+        }
         for (Company company:companies){
             List<RiskCheck> riskChecks = riskCheckMapper.getRiskCheckByCompanyId(company.getId());
             //test riskChecks size

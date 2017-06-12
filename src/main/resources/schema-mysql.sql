@@ -78,7 +78,7 @@ create table risk_check_item
    id_template_item     int not null,
    id_risk_check        int not null,
    status               text,
-   finish_date          timestamp,
+   finish_date          timestamp null,
    primary key (id)
 );
 
