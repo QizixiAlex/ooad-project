@@ -155,8 +155,7 @@ public class TestViewRiskCheck {
                 //测试模板项目内容
                 assertThat(riskCheckItemList.get(i).getItem(),new SamePropertyValuesAs<>(templateItem));
                 //测试检查项目时间和状态
-                //todo
-                //assertNull(riskCheckItemList.get(i).getFinishDate());
+                assertNull(riskCheckItemList.get(i).getFinishDate());
                 assertEquals(CheckStatus.排查中,riskCheckItemList.get(i).getStatus());
             }
         }

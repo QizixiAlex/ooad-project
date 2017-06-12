@@ -99,8 +99,7 @@ public class TestExecuteRiskCheck {
                     List<RiskCheckItem> items = riskCheck.getItems();
                     //初始情况下检查项应为排查中，完成时间为空
                     items.forEach(item -> {
-                        //todo
-                        //assertNull(item.getFinishDate());
+                        assertNull(item.getFinishDate());
                         assertEquals(CheckStatus.排查中,item.getStatus());
                     });
                     //完成奇数项
