@@ -157,6 +157,15 @@ public class TestRiskCheckPlanMapper {
 
         }//end of test about "company_in_plan"
 
+        //test delete
+        for (RiskCheckPlan plan: riskCheckPlans){
+            riskCheckPlanMapper.deleteCompanyInPlanByIdPlan(plan.getId());
+            riskCheckPlanMapper.deleteRiskCheckPlan(plan);
+            RiskCheckPlan retrievePlan = riskCheckPlanMapper.getRiskCheckPlanById(plan.getId());
+            Assert.assertEquals(null, retrievePlan);
+        }
+
+
     }
 
 }

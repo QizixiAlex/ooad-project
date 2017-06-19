@@ -88,4 +88,9 @@ public interface RiskCheckPlanMapper {
     @Delete(" DELETE FROM company_in_plan" +
             " WHERE id_plan = #{id_plan}")
     void deleteCompanyInPlanByIdPlan(@Param("id_plan") int id_plan);
+
+    //删除一个plan，根据id
+    @Delete(" DELETE FROM risk_check_plan" +
+            " WHERE id = #{id}")
+    void deleteRiskCheckPlan(RiskCheckPlan riskCheckPlan);
 }
