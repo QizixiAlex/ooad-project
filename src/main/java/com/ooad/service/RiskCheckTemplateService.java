@@ -47,7 +47,8 @@ public class RiskCheckTemplateService {
         //检查输入合法性
         if (riskCheckTemplate==null
                 ||riskCheckTemplate.getName()==null
-                ||riskCheckTemplate.getDescription()==null){
+                ||riskCheckTemplate.getDescription()==null
+                ||riskCheckTemplate.getItems()==null){
             throw new NullAttributeException("输入为空");
         }
         //创建
@@ -64,7 +65,8 @@ public class RiskCheckTemplateService {
         //检查输入合法性
         if (riskCheckTemplate==null
                 ||riskCheckTemplate.getName()==null
-                ||riskCheckTemplate.getDescription()==null){
+                ||riskCheckTemplate.getDescription()==null
+                ||riskCheckTemplate.getItems()==null){
             throw new NullAttributeException("输入为空");
         }
         //检查更新的目标存在与否

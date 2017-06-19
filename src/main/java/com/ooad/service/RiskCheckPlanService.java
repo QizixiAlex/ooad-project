@@ -49,7 +49,8 @@ public class RiskCheckPlanService {
                 riskCheckPlan.getName()==null||
                 riskCheckPlan.getStartDate()==null||
                 riskCheckPlan.getFinishDate()==null||
-                riskCheckPlan.getTemplate()==null){
+                riskCheckPlan.getTemplate()==null||
+                riskCheckPlan.getCompanies()==null){
             throw new NullAttributeException("输入为空");
         }
         //创建
@@ -68,7 +69,8 @@ public class RiskCheckPlanService {
                 riskCheckPlan.getName()==null||
                 riskCheckPlan.getStartDate()==null||
                 riskCheckPlan.getFinishDate()==null||
-                riskCheckPlan.getTemplate()==null){
+                riskCheckPlan.getTemplate()==null||
+                riskCheckPlan.getCompanies()==null){
             throw new NullAttributeException("输入为空");
         }
         //检查更新的目标存在与否
