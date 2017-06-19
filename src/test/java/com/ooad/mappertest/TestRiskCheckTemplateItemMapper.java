@@ -85,6 +85,8 @@ public class TestRiskCheckTemplateItemMapper {
         //test delete
         for (RiskCheckTemplateItem dbItem:dbItems){
             riskCheckTemplateItemMapper.deleteRiskCheckTemplateItem(dbItem);
+            RiskCheckTemplateItem retrieveItem = riskCheckTemplateItemMapper.getRiskCheckTemplateItemById(dbItem.getId());
+            Assert.assertEquals(null,retrieveItem);
         }
     }
 }

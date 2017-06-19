@@ -136,5 +136,14 @@ public class TestRiskCheckTemplateMapper {
                 }
             }
         }//end of test about "item_in_template"
+
+        //test delete
+        for (RiskCheckTemplate template: riskCheckTemplates){
+            riskCheckTemplateMapper.deleteItemInTemplateByIdTemplate(template.getId());
+            riskCheckTemplateMapper.deleteRiskCheckTemplate(template);
+            RiskCheckTemplate retrieveTemplate = riskCheckTemplateMapper.getRiskCheckTemplateById(template.getId());
+            Assert.assertEquals(null, retrieveTemplate);
+        }
+
     }
 }
