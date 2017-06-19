@@ -2,6 +2,8 @@ package com.ooad.servicetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.*;
+import com.ooad.exception.EntityNotFoundException;
+import com.ooad.exception.RiskCheckException;
 import com.ooad.service.CompanyService;
 import com.ooad.service.RiskCheckPlanService;
 import com.ooad.service.RiskCheckTemplateItemService;
@@ -41,7 +43,7 @@ public class TestRiskCheckPlanService {
     private List<RiskCheckPlan> riskCheckPlans;
 
     @Before
-    public void initializeData(){
+    public void initializeData() throws RiskCheckException {
 
         companies = new ArrayList<Company>();
         riskCheckTemplateItems = new ArrayList<RiskCheckTemplateItem>();
@@ -84,7 +86,7 @@ public class TestRiskCheckPlanService {
     }//end of initializeData()
 
     @Test
-    public void testRiskCheckPlanService(){
+    public void testRiskCheckPlanService() throws RiskCheckException  {
         //get 'number' of tuples before create
         List<RiskCheckPlan> dbPlans = riskCheckPlanService.getRiskCheckPlans();
         final int ORINUM=dbPlans.size();
@@ -190,6 +192,17 @@ public class TestRiskCheckPlanService {
                 Assert.assertTrue(found);
             }
         }//end of test update
+
+        //test delete
+        for (RiskCheckPlan plan:riskCheckPlans){
+            riskCheckPlanService.deleteRiskCheckPlan(plan);
+            try {
+                RiskCheckPlan retrievePlan=riskCheckPlanService.getRiskCheckPlanById(plan.getId());
+                Assert.assertTrue(false);
+            } catch (Exception e){
+                Assert.assertEquals(EntityNotFoundException.class,e.getClass());
+            }
+        }
 
     }
 
