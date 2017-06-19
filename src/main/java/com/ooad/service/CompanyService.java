@@ -42,7 +42,7 @@ public class CompanyService {
         }
         Company dbCompany = companyMapper.getCompanyById(company.getId());
         if (dbCompany==null){
-            throw new DuplicateAttributeException("公司不存在");
+            throw new EntityNotFoundException("公司不存在");
         }
         companyMapper.updateCompany(company);
     }

@@ -2,6 +2,8 @@ package com.ooad.servicetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplateItem;
+import com.ooad.exception.EntityNotFoundException;
+import com.ooad.exception.RiskCheckException;
 import com.ooad.service.RiskCheckTemplateItemService;
 import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class TestRiskCheckTemplateItemService {
     }
 
     @Test
-    public void testRiskCheckTemplateItemService(){
+    public void testRiskCheckTemplateItemService() throws RiskCheckException {
 
         //get 'number' of tuples before create
         List<RiskCheckTemplateItem> dbItems = riskCheckTemplateItemService.getRiskCheckTemplateItems();
@@ -80,6 +83,17 @@ public class TestRiskCheckTemplateItemService {
             riskCheckTemplateItemService.updateRiskCheckTemplateItem(item);
             RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemService.getRiskCheckTemplateItemById(item.getId());
             Assert.assertThat(item, new SamePropertyValuesAs<>(retrieveItem));
+        }
+
+        //test delete
+        for (RiskCheckTemplateItem item:riskCheckTemplateItems){
+            riskCheckTemplateItemService.deleteRiskCheckTemplateItem(item);
+            try {
+                RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemService.getRiskCheckTemplateItemById(item.getId());
+                Assert.assertTrue(false);
+            } catch (Exception e){
+                Assert.assertEquals(EntityNotFoundException.class,e.getClass());
+            }
         }
     }
 
