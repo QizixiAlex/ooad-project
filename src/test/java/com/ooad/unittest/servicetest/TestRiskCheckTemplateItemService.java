@@ -1,4 +1,4 @@
-package com.ooad.servicetest;
+package com.ooad.unittest.servicetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplateItem;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 

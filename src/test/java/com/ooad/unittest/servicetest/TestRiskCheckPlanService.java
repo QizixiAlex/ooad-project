@@ -1,4 +1,4 @@
-package com.ooad.servicetest;
+package com.ooad.unittest.servicetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.*;

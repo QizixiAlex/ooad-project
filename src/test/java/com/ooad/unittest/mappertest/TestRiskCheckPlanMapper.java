@@ -1,4 +1,4 @@
-package com.ooad.mappertest;
+package com.ooad.unittest.mappertest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.Company;
@@ -9,7 +9,6 @@ import com.ooad.mapper.CompanyMapper;
 import com.ooad.mapper.RiskCheckPlanMapper;
 import com.ooad.mapper.RiskCheckTemplateItemMapper;
 import com.ooad.mapper.RiskCheckTemplateMapper;
-import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

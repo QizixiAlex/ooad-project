@@ -1,4 +1,4 @@
-package com.ooad.mappertest;
+package com.ooad.unittest.mappertest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplateItem;
