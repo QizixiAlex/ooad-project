@@ -3,6 +3,8 @@ package com.ooad.servicetest;
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplate;
 import com.ooad.entity.RiskCheckTemplateItem;
+import com.ooad.exception.EntityNotFoundException;
+import com.ooad.exception.RiskCheckException;
 import com.ooad.service.RiskCheckTemplateItemService;
 import com.ooad.service.RiskCheckTemplateService;
 import org.junit.Assert;
@@ -32,7 +34,7 @@ public class TestRiskCheckTemplateService {
     private List<RiskCheckTemplateItem> riskCheckTemplateItems;
 
     @Before
-    public void initializeData(){
+    public void initializeData() throws RiskCheckException {
 
         riskCheckTemplateItems = new ArrayList<RiskCheckTemplateItem>();
         riskCheckTemplates = new ArrayList<RiskCheckTemplate>();
@@ -55,7 +57,7 @@ public class TestRiskCheckTemplateService {
     }//end of initializeData()
 
     @Test
-    public void testRiskCheckTemplateService(){
+    public void testRiskCheckTemplateService() throws RiskCheckException{
 
         //get 'number' of tuples before create
         List<RiskCheckTemplate> dbTemplates = riskCheckTemplateService.getRiskCheckTemplates();
@@ -128,6 +130,17 @@ public class TestRiskCheckTemplateService {
                 Assert.assertTrue(found);
             }
         }//end of test update
+
+        //test delete
+        for (RiskCheckTemplate template:riskCheckTemplates){
+            riskCheckTemplateService.deleteRiskCheckTemplate(template);
+            try {
+                RiskCheckTemplate retrieveTemplate=riskCheckTemplateService.getRiskCheckTemplateById(template.getId());
+                Assert.assertTrue(false);
+            } catch (Exception e){
+                Assert.assertEquals(EntityNotFoundException.class,e.getClass());
+            }
+        }
 
     }//end of testRiskCheckTemplateService()
 
