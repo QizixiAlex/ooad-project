@@ -1,4 +1,4 @@
-package com.ooad.mappertest;
+package com.ooad.unittest.mappertest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.Company;
@@ -9,7 +9,6 @@ import com.ooad.mapper.CompanyMapper;
 import com.ooad.mapper.RiskCheckPlanMapper;
 import com.ooad.mapper.RiskCheckTemplateItemMapper;
 import com.ooad.mapper.RiskCheckTemplateMapper;
-import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,6 +155,15 @@ public class TestRiskCheckPlanMapper {
             Assert.assertEquals(0,plan1.getCompanies().size());
 
         }//end of test about "company_in_plan"
+
+        //test delete
+        for (RiskCheckPlan plan: riskCheckPlans){
+            riskCheckPlanMapper.deleteCompanyInPlanByIdPlan(plan.getId());
+            riskCheckPlanMapper.deleteRiskCheckPlan(plan);
+            RiskCheckPlan retrievePlan = riskCheckPlanMapper.getRiskCheckPlanById(plan.getId());
+            Assert.assertEquals(null, retrievePlan);
+        }
+
 
     }
 

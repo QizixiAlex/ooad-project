@@ -1,4 +1,4 @@
-package com.ooad.mappertest;
+package com.ooad.unittest.mappertest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplate;
@@ -136,5 +136,14 @@ public class TestRiskCheckTemplateMapper {
                 }
             }
         }//end of test about "item_in_template"
+
+        //test delete
+        for (RiskCheckTemplate template: riskCheckTemplates){
+            riskCheckTemplateMapper.deleteItemInTemplateByIdTemplate(template.getId());
+            riskCheckTemplateMapper.deleteRiskCheckTemplate(template);
+            RiskCheckTemplate retrieveTemplate = riskCheckTemplateMapper.getRiskCheckTemplateById(template.getId());
+            Assert.assertEquals(null, retrieveTemplate);
+        }
+
     }
 }

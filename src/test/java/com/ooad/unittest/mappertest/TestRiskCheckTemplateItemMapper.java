@@ -1,8 +1,8 @@
-package com.ooad.servicetest;
+package com.ooad.unittest.mappertest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.entity.RiskCheckTemplateItem;
-import com.ooad.service.RiskCheckTemplateItemService;
+import com.ooad.mapper.RiskCheckTemplateItemMapper;
 import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Shijian on 2017/6/5.
+ * Created by Shijian on 2017/6/2.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RisksystemApplication.class)
-public class TestRiskCheckTemplateItemService {
+public class TestRiskCheckTemplateItemMapper {
 
     @Autowired
-    private RiskCheckTemplateItemService riskCheckTemplateItemService;
+    private RiskCheckTemplateItemMapper riskCheckTemplateItemMapper;
 
     private List<RiskCheckTemplateItem> riskCheckTemplateItems;
 
@@ -39,25 +39,25 @@ public class TestRiskCheckTemplateItemService {
     }
 
     @Test
-    public void testRiskCheckTemplateItemService(){
+    public void testRiskCheckTemplateItemMapper(){
 
         //get 'number' of tuples before create
-        List<RiskCheckTemplateItem> dbItems = riskCheckTemplateItemService.getRiskCheckTemplateItems();
+        List<RiskCheckTemplateItem> dbItems = riskCheckTemplateItemMapper.getRiskCheckTemplateItems();
         final int ORINUM=dbItems.size();
 
         //create
         for (RiskCheckTemplateItem item:riskCheckTemplateItems) {
-            riskCheckTemplateItemService.createRiskCheckTemplateItem(item);
+            riskCheckTemplateItemMapper.createRiskCheckTemplateItem(item);
+            //System.out.print(item.getId());
         }
 
         //test retrieve all and create
-        dbItems = riskCheckTemplateItemService.getRiskCheckTemplateItems();
+        dbItems = riskCheckTemplateItemMapper.getRiskCheckTemplateItems();
         Assert.assertEquals(3, dbItems.size()-ORINUM);
         for (RiskCheckTemplateItem item:riskCheckTemplateItems){
             boolean found=false;
             for (RiskCheckTemplateItem dbItem:dbItems){
-                if (item.getId()==dbItem.getId()&&
-                        item.getName().equals(dbItem.getName())&&
+                if (item.getName().equals(dbItem.getName())&&
                         item.getContent().equals(dbItem.getContent())){
                     found=true;
                     break;
@@ -67,20 +67,26 @@ public class TestRiskCheckTemplateItemService {
         }
 
         //test retrieve by id
-        for (RiskCheckTemplateItem item:riskCheckTemplateItems){
-            RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemService.getRiskCheckTemplateItemById(item.getId());
-            Assert.assertThat(item, new SamePropertyValuesAs<>(retrieveItem));
+        for (RiskCheckTemplateItem dbItem:dbItems){
+            RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemMapper.getRiskCheckTemplateItemById(dbItem.getId());
+            Assert.assertThat(dbItem, new SamePropertyValuesAs<>(retrieveItem));
         }
 
         //test update
         int index=1;
-        for (RiskCheckTemplateItem item:riskCheckTemplateItems){
-            item.setName("更新(update)过的名字["+index+"]");
-            item.setContent("相应的升级过的内容["+(index++)+"]");
-            riskCheckTemplateItemService.updateRiskCheckTemplateItem(item);
-            RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemService.getRiskCheckTemplateItemById(item.getId());
-            Assert.assertThat(item, new SamePropertyValuesAs<>(retrieveItem));
+        for (RiskCheckTemplateItem dbItem:dbItems){
+            dbItem.setName("更新(update)过的名字["+index+"]");
+            dbItem.setContent("相应的升级过的内容["+(index++)+"]");
+            riskCheckTemplateItemMapper.updateRiskCheckTemplateItem(dbItem);
+            RiskCheckTemplateItem retrieveItem=riskCheckTemplateItemMapper.getRiskCheckTemplateItemById(dbItem.getId());
+            Assert.assertThat(dbItem, new SamePropertyValuesAs<>(retrieveItem));
+        }
+
+        //test delete
+        for (RiskCheckTemplateItem dbItem:dbItems){
+            riskCheckTemplateItemMapper.deleteRiskCheckTemplateItem(dbItem);
+            RiskCheckTemplateItem retrieveItem = riskCheckTemplateItemMapper.getRiskCheckTemplateItemById(dbItem.getId());
+            Assert.assertEquals(null,retrieveItem);
         }
     }
-
 }

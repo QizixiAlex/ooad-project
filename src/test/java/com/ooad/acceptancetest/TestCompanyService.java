@@ -1,4 +1,4 @@
-package com.ooad.apitest;
+package com.ooad.acceptancetest;
 
 import com.ooad.RisksystemApplication;
 import com.ooad.TestDataGenerator;

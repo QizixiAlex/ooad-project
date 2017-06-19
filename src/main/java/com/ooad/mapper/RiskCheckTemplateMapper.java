@@ -80,4 +80,9 @@ public interface RiskCheckTemplateMapper {
     @Delete(" DELETE FROM item_in_template" +
             " WHERE id_template = #{id_template}")
     void deleteItemInTemplateByIdTemplate(@Param("id_template")int id_template);
+
+    //删除一个template，根据id
+    @Delete(" DELETE FROM risk_check_template" +
+            " WHERE id = #{id}")
+    void deleteRiskCheckTemplate(RiskCheckTemplate riskCheckTemplate);
 }

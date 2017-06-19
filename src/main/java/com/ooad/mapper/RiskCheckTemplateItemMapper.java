@@ -46,4 +46,8 @@ public interface RiskCheckTemplateItemMapper {
             " WHERE id = #{id}")
     void updateRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
 
+    //根据id，删除item
+    @Delete(" DELETE FROM risk_check_template_item" +
+            " WHERE id = #{id}")
+    void deleteRiskCheckTemplateItem(RiskCheckTemplateItem riskCheckTemplateItem);
 }
